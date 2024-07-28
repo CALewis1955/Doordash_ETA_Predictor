@@ -86,7 +86,7 @@ Navigate to the experiment-tracking directory.  To start Mlflow, we need Python 
     poetry env use 3.11.9
     poetry install
     poetry shell
-    mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://<your_RDSdb_Master_username>:<your_RDSdb_password>@<your_AWS_RDS_endpoint>your_AWS_RDS_port>/<your         AWS_RDSdb_Configuration_DBname> --artifacts-destination s3://<your AWs _s3_bucket_name> --serve-artifacts
+    mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://<your_RDSdb_Master_username>:<your_RDSdb_password>@<your_AWS_RDS_endpoint>your_AWS_RDS_port>/<your  AWS_RDSdb_Configuration_DBname> --artifacts-destination s3://<your AWS_s3_bucket_name> --serve-artifacts
     
 Note that Mlflow requires the installation of both boto3 and psycop2g.
 
@@ -104,13 +104,13 @@ In the web-service directory, run the following command to build the Dockerfile:
 
     docker build --build-arg AWS_ACCESS_KEY_ID=<your AWS Access Key> --build-arg AWS_SECRET_ACCESS_KEY=<your AWS Secret Access Key> -t web-service:v1 .
 
-Note that the AWS default region has been hard-coded as an environmental variable in the Dockerfile.  You will need to change this to your AWS default region or modify the Dockerfile to pass in the AWS default region as an additional build argument.   
+Note that the AWS default region has been hard-coded as an environmental variable in the Dockerfile.  You will need to change this to your AWS default region or modify the Dockerfile to pass in the AWS default region as an additional build argument.  Also, in the file "predict_mlflow.py", you will need to specify your s3 bucket name and RUN_ID to retrieve the logged model. 
 
 To run the web-service, use this command:
  
     docker run -it --rm -p 9696:9696  web-service:v1
     
-To test the web-sever, open a new terminal window and go to prediction-server/tests directory.  Run the following commands:
+You will need to configure your AWS EC2 permissions to allow inbound and outbound traffic on port 9696.  To test the web-sever, open a new terminal window and go to prediction-server/tests directory.  Run the following commands:
 
     poetry env use 3.11.9
     poetry install
