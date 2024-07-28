@@ -54,4 +54,3 @@ estimated_order_place_duration: Estimated time for the restaurant to receive the
 
 estimated_store_to_consumer_driving_duration: Estimated travel time between store and consumer (in seconds)
 
-"""
