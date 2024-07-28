@@ -1,0 +1,464 @@
+{
+    "metrics": [
+        {
+            "metric": "ColumnDriftMetric",
+            "result": {
+                "column_name": "prediction",
+                "column_type": "num",
+                "stattest_name": "Wasserstein distance (normed)",
+                "stattest_threshold": 0.1,
+                "drift_score": 0.17696189741532006,
+                "drift_detected": true,
+                "current": {
+                    "small_distribution": {
+                        "x": [
+                            14.56094207865997,
+                            36.4019342835214,
+                            58.24292648838283,
+                            80.08391869324424,
+                            101.92491089810568,
+                            123.76590310296712,
+                            145.60689530782852,
+                            167.44788751268996,
+                            189.2888797175514,
+                            211.12987192241283,
+                            232.97086412727424
+                        ],
+                        "y": [
+                            0.001234296567743195,
+                            0.037531944645079564,
+                            0.006858239708094026,
+                            0.00015883196143051965,
+                            1.4352285671432498e-06,
+                            2.3920476119054195e-07,
+                            2.3920476119054163e-07,
+                            0.0,
+                            0.0,
+                            2.3920476119054195e-07
+                        ]
+                    }
+                },
+                "reference": {
+                    "small_distribution": {
+                        "x": [
+                            14.34722716548385,
+                            36.22278477053972,
+                            58.09834237559559,
+                            79.97389998065145,
+                            101.84945758570734,
+                            123.7250151907632,
+                            145.60057279581906,
+                            167.47613040087495,
+                            189.3516880059308,
+                            211.22724561098667,
+                            233.10280321604256
+                        ],
+                        "y": [
+                            0.0017150152191214214,
+                            0.03848383336075315,
+                            0.00539748558030137,
+                            0.00011511451547368392,
+                            9.553071823542247e-07,
+                            4.776535911771124e-07,
+                            0.0,
+                            0.0,
+                            0.0,
+                            2.3882679558855586e-07
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "metric": "DatasetDriftMetric",
+            "result": {
+                "drift_share": 0.5,
+                "number_of_columns": 13,
+                "number_of_drifted_columns": 3,
+                "share_of_drifted_columns": 0.23076923076923078,
+                "dataset_drift": false
+            }
+        },
+        {
+            "metric": "DatasetMissingValuesMetric",
+            "result": {
+                "current": {
+                    "different_missing_values": {
+                        "": 0,
+                        "-Infinity": 0,
+                        "null": 0,
+                        "Infinity": 0
+                    },
+                    "number_of_different_missing_values": 0,
+                    "different_missing_values_by_column": {
+                        "market_id": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "created_at": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "actual_delivery_time": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "store_id": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "store_primary_category": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "order_protocol": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_items": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "subtotal": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "num_distinct_items": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "min_item_price": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "max_item_price": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_onshift_dashers": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_busy_dashers": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_outstanding_orders": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "estimated_order_place_duration": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "estimated_store_to_consumer_driving_duration": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "actual_duration": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "prediction": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        }
+                    },
+                    "number_of_different_missing_values_by_column": {
+                        "market_id": 0,
+                        "created_at": 0,
+                        "actual_delivery_time": 0,
+                        "store_id": 0,
+                        "store_primary_category": 0,
+                        "order_protocol": 0,
+                        "total_items": 0,
+                        "subtotal": 0,
+                        "num_distinct_items": 0,
+                        "min_item_price": 0,
+                        "max_item_price": 0,
+                        "total_onshift_dashers": 0,
+                        "total_busy_dashers": 0,
+                        "total_outstanding_orders": 0,
+                        "estimated_order_place_duration": 0,
+                        "estimated_store_to_consumer_driving_duration": 0,
+                        "actual_duration": 0,
+                        "prediction": 0
+                    },
+                    "number_of_missing_values": 0,
+                    "share_of_missing_values": 0.0,
+                    "number_of_missing_values_by_column": {
+                        "market_id": 0,
+                        "created_at": 0,
+                        "actual_delivery_time": 0,
+                        "store_id": 0,
+                        "store_primary_category": 0,
+                        "order_protocol": 0,
+                        "total_items": 0,
+                        "subtotal": 0,
+                        "num_distinct_items": 0,
+                        "min_item_price": 0,
+                        "max_item_price": 0,
+                        "total_onshift_dashers": 0,
+                        "total_busy_dashers": 0,
+                        "total_outstanding_orders": 0,
+                        "estimated_order_place_duration": 0,
+                        "estimated_store_to_consumer_driving_duration": 0,
+                        "actual_duration": 0,
+                        "prediction": 0
+                    },
+                    "share_of_missing_values_by_column": {
+                        "market_id": 0.0,
+                        "created_at": 0.0,
+                        "actual_delivery_time": 0.0,
+                        "store_id": 0.0,
+                        "store_primary_category": 0.0,
+                        "order_protocol": 0.0,
+                        "total_items": 0.0,
+                        "subtotal": 0.0,
+                        "num_distinct_items": 0.0,
+                        "min_item_price": 0.0,
+                        "max_item_price": 0.0,
+                        "total_onshift_dashers": 0.0,
+                        "total_busy_dashers": 0.0,
+                        "total_outstanding_orders": 0.0,
+                        "estimated_order_place_duration": 0.0,
+                        "estimated_store_to_consumer_driving_duration": 0.0,
+                        "actual_duration": 0.0,
+                        "prediction": 0.0
+                    },
+                    "number_of_rows": 191407,
+                    "number_of_rows_with_missing_values": 0,
+                    "share_of_rows_with_missing_values": 0.0,
+                    "number_of_columns": 18,
+                    "columns_with_missing_values": [],
+                    "number_of_columns_with_missing_values": 0,
+                    "share_of_columns_with_missing_values": 0.0
+                },
+                "reference": {
+                    "different_missing_values": {
+                        "": 0,
+                        "-Infinity": 0,
+                        "null": 0,
+                        "Infinity": 0
+                    },
+                    "number_of_different_missing_values": 0,
+                    "different_missing_values_by_column": {
+                        "market_id": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "created_at": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "actual_delivery_time": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "store_id": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "store_primary_category": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "order_protocol": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_items": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "subtotal": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "num_distinct_items": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "min_item_price": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "max_item_price": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_onshift_dashers": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_busy_dashers": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "total_outstanding_orders": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "estimated_order_place_duration": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "estimated_store_to_consumer_driving_duration": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "actual_duration": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        },
+                        "prediction": {
+                            "": 0,
+                            "-Infinity": 0,
+                            "null": 0,
+                            "Infinity": 0
+                        }
+                    },
+                    "number_of_different_missing_values_by_column": {
+                        "market_id": 0,
+                        "created_at": 0,
+                        "actual_delivery_time": 0,
+                        "store_id": 0,
+                        "store_primary_category": 0,
+                        "order_protocol": 0,
+                        "total_items": 0,
+                        "subtotal": 0,
+                        "num_distinct_items": 0,
+                        "min_item_price": 0,
+                        "max_item_price": 0,
+                        "total_onshift_dashers": 0,
+                        "total_busy_dashers": 0,
+                        "total_outstanding_orders": 0,
+                        "estimated_order_place_duration": 0,
+                        "estimated_store_to_consumer_driving_duration": 0,
+                        "actual_duration": 0,
+                        "prediction": 0
+                    },
+                    "number_of_missing_values": 0,
+                    "share_of_missing_values": 0.0,
+                    "number_of_missing_values_by_column": {
+                        "market_id": 0,
+                        "created_at": 0,
+                        "actual_delivery_time": 0,
+                        "store_id": 0,
+                        "store_primary_category": 0,
+                        "order_protocol": 0,
+                        "total_items": 0,
+                        "subtotal": 0,
+                        "num_distinct_items": 0,
+                        "min_item_price": 0,
+                        "max_item_price": 0,
+                        "total_onshift_dashers": 0,
+                        "total_busy_dashers": 0,
+                        "total_outstanding_orders": 0,
+                        "estimated_order_place_duration": 0,
+                        "estimated_store_to_consumer_driving_duration": 0,
+                        "actual_duration": 0,
+                        "prediction": 0
+                    },
+                    "share_of_missing_values_by_column": {
+                        "market_id": 0.0,
+                        "created_at": 0.0,
+                        "actual_delivery_time": 0.0,
+                        "store_id": 0.0,
+                        "store_primary_category": 0.0,
+                        "order_protocol": 0.0,
+                        "total_items": 0.0,
+                        "subtotal": 0.0,
+                        "num_distinct_items": 0.0,
+                        "min_item_price": 0.0,
+                        "max_item_price": 0.0,
+                        "total_onshift_dashers": 0.0,
+                        "total_busy_dashers": 0.0,
+                        "total_outstanding_orders": 0.0,
+                        "estimated_order_place_duration": 0.0,
+                        "estimated_store_to_consumer_driving_duration": 0.0,
+                        "actual_duration": 0.0,
+                        "prediction": 0.0
+                    },
+                    "number_of_rows": 191407,
+                    "number_of_rows_with_missing_values": 0,
+                    "share_of_rows_with_missing_values": 0.0,
+                    "number_of_columns": 18,
+                    "columns_with_missing_values": [],
+                    "number_of_columns_with_missing_values": 0,
+                    "share_of_columns_with_missing_values": 0.0
+                }
+            }
+        }
+    ]
+}
