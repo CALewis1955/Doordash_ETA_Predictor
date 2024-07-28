@@ -44,9 +44,8 @@ I switched to Poetry after spending a week in "dependency hell" using pipenv and
 
 Clone the Github repository locally.
 
-    {
-        git clone https://github.com/CALewis1955/doordash_eta_predictor/master
-    }
+            git clone https://github.com/CALewis1955/doordash_eta_predictor/master
+
 
 ### Step 2 -- Setup your AWS account
 
