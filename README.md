@@ -73,7 +73,7 @@ You must add your AWS credentials to the .env.dev file so they can be accessed a
 
 Here is a screenshot of the Mage workflow:
 
-![Screenshot](~/images/mage_screenshot.png)
+![Screenshot](/images/mage_screenshot.png)
 
 To view Mage in your browser, go to localhost:6789.  (If you encounter difficulty, ensure you've forwarded the port in VS Code, and ensure that no earlier processes are using the port on your local machine.  You can do the latter with the following command:  "lsof -i:6789".  If earlier processes are interfering with your use, kill them with this command:  "kill -9 <process id>" and then try to forward the port again.)
 
