@@ -1,0 +1,15 @@
+mlflow
+jupyter
+scikit-learn
+pandas
+seaborn
+hyperopt
+xgboost
+tqdm
+requests
+joblib
+pyarrow
+psycopg
+psycopg_binary
+evidently 
+influxdb

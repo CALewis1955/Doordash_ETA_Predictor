@@ -1,0 +1,55 @@
+if 'transformer' not in globals():
+    from mage_ai.data_preparation.decorators import transformer
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+import pandas as pd
+import random
+import datetime
+
+@transformer
+def transform(data, *args, **kwargs):
+    """
+    Template code for a transformer block.
+
+    Add more parameters to this function if this block has multiple parent blocks.
+    There should be one parameter for each output variable from each parent block.
+
+    Args:
+        data: The output from the upstream parent block
+        args: The output from any additional upstream blocks (if applicable)
+
+    Returns:
+        Anything (e.g. data frame, dictionary, array, int, str, etc.)
+    """
+    # Specify your transformation logic here
+    df = data
+    # Function to vary numerical data by a random percentage up to 3%
+    dollar_values = ['max_item_price', 'min_item_price', 'subtotal', 'max_item_price', 'min_item_price']
+    integer_values = ['total_items', 'num_distinct_items','total_onshift_dashers', 'total_busy_dashers', 'total_outstanding_orders']
+    def fake_data(value):
+        percentage = random.uniform(-0.10, 0.10)  # Random percentage between -3% and 3%
+        return value * (1 + percentage)
+    def fake_
+    numerical = ['max_item_price', 'min_item_price', 'subtotal', 'total_items', 'num_distinct_items', 'max_item_price', 'min_item_price', 'total_onshift_dashers', 'total_busy_dashers', 'total_outstanding_orders']
+    # Apply the function to each numerical column in the dataframe
+    def generate_fake_data():
+        for column in df.select_dtypes(include=[float, int]):
+            df[column] = df[column].apply(fake_data)
+        print(df.head(2))
+        filename = f'./mage_data/fake_data_{datetime.datetime.now().strftime("%m-%d-%Y")}.csv'  
+        with open(filename, 'w') as f_out:
+            df.to_csv(f_out, index=False)   
+        return (df)
+
+    recent_data = generate_fake_data()
+    print(data.dtypes)
+    return data, recent_data
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'

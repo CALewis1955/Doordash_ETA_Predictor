@@ -1,0 +1,61 @@
+if 'transformer' not in globals():
+    from mage_ai.data_preparation.decorators import transformer
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+from influxdb import InfluxDBClient
+import json
+
+
+
+@transformer
+def transform(data, *args, **kwargs):
+    """
+    Template code for a transformer block.
+
+    Add more parameters to this function if this block has multiple parent blocks.
+    There should be one parameter for each output variable from each parent block.
+
+    Args:
+        data: The output from the upstream parent block
+        args: The output from any additional upstream blocks (if applicable)
+
+    Returns:
+        Anything (e.g. data frame, dictionary, array, int, str, etc.)
+    """
+    # Specify your transformation logic here
+    filepath = f'./mage_data/evidently_report_{datetime.now().strftime("%m-%d-%Y")}.py'
+    with open(filepath, 'r') as f_out:
+        json.dump(evidently_report, f_out, indent=4) 
+    client = InfluxDBClient(host='localhost', port=8086)
+    client.switch_database('evidently_metrics')
+    print(f'This is the type: {type(data)}')
+    '''
+    evidently_report = data
+    # Load your Evidently report
+    with open(evidently_report) as f:
+        report_data = json.load(f)
+
+    # Prepare InfluxDB data
+    influx_data = [
+        {
+            "measurement": "model_metrics",
+            "tags": {
+                "model": "your_model_name",
+            },
+            "fields": report_data  # Ensure report_data is a flat dictionary
+        }
+    ]
+
+    # Write data to InfluxDB
+    client.write_points(influx_data)
+    return data
+    '''
+    return
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'

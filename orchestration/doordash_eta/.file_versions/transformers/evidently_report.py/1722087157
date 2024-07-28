@@ -1,0 +1,92 @@
+if 'transformer' not in globals():
+    from mage_ai.data_preparation.decorators import transformer
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+import pandas as pd
+from evidently import ColumnMapping
+from evidently.report import Report
+from evidently.metrics import ColumnDriftMetric, DatasetDriftMetric, DatasetMissingValuesMetric
+from datetime import datetime
+import mlflow
+import os
+import json
+
+
+
+@transformer
+def transform(data, *args, **kwargs):
+    """
+    Template code for a transformer block.
+
+    Add more parameters to this function if this block has multiple parent blocks.
+    There should be one parameter for each output variable from each parent block.
+
+    Args:
+        data: The output from the upstream parent block
+        args: The output from any additional upstream blocks (if applicable)
+
+    Returns:
+        Anything (e.g. data frame, dictionary, array, int, str, etc.)
+    """
+    # Specify your transformation logic here
+
+    def add_target_df(df):
+        df['created_at'] = pd.to_datetime(df['created_at']).astype(int) / 10**9
+        df['actual_delivery_time'] = pd.to_datetime(df['actual_delivery_time']).astype(int) / 10**9
+        df['actual_duration'] = (df['actual_delivery_time'] - df['created_at']) / 60
+        return df
+
+    numerical = ['max_item_price', 'min_item_price', 'subtotal', 'total_items', 'num_distinct_items', 'max_item_price', 'min_item_price', 'total_onshift_dashers', 'total_busy_dashers', 'total_outstanding_orders']
+    categorical = ['market_id', 'store_id', 'store_primary_category', 'order_protocol']
+
+    reference_data = add_target_df(data[0]) #original data 
+    reference_dict = reference_data[categorical + numerical].to_dict(orient='records')
+
+    
+    current_data = add_target_df(data[1]) #dummy data
+    current_dict = current_data[categorical + numerical].to_dict(orient='records')
+
+
+    # retrieve model 
+    pipeline = joblib.load('./mage_data/pipeline.pkl')
+
+    reference_preds = pipeline.predict(reference_dict)
+    reference_data['prediction'] = reference_preds
+
+    current_preds = pipeline.predict(current_dict)
+    current_data['prediction'] = current_preds
+
+    column_mapping = ColumnMapping(
+        target=None,
+        prediction='prediction',
+        numerical_features=numerical,
+        categorical_features=categorical
+    )
+
+    report = Report(metrics=[
+        ColumnDriftMetric(column_name='prediction'),
+        DatasetDriftMetric(),
+        DatasetMissingValuesMetric()
+    ]
+    )
+
+    report.run(reference_data=reference_data, current_data=current_data, column_mapping=column_mapping)
+
+    report.show()
+
+    evidently_report = report.as_dict()
+
+    with open(f'./mage_data/evidently_report_{datetime.now().strftime("%m-%d-%Y")}.html', 'w') as f_out:
+        json.dump(evidently_report, f_out    
+    
+    
+    return data
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'
