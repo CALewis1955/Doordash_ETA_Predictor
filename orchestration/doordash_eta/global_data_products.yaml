@@ -1,0 +1,10 @@
+training_set:
+  object_type: pipeline
+  object_uuid: doordash_eta
+  outdated_after:
+    seconds: null
+    weeks: 4
+  repo_path: /home/src/doordash_eta
+  settings:
+    prepare_training_set: {}
+    prepare_training_sets: {}

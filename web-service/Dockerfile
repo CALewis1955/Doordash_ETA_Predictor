@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y curl \
 
 WORKDIR /app
 
-COPY .env /app/.env
+#COPY .env /app/.env
 
 COPY ["pyproject.toml", "poetry.lock", "./"]
 

@@ -110,7 +110,7 @@ To run the web-service, use this command:
  
     docker run -it --rm -p 9696:9696  web-service:v1
     
-You will need to configure your AWS EC2 permissions to allow inbound and outbound traffic on port 9696.  To test the web-sever, open a new terminal window and go to prediction-server/tests directory.  Run the following commands:
+You will need to configure your AWS EC2 permissions to allow inbound and outbound traffic on port 9696.  To test the web-sever, open a new terminal window and go to web-service/tests directory.  Run the following commands:
 
     poetry env use 3.11.9
     poetry install
