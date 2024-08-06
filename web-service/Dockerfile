@@ -46,10 +46,8 @@ COPY ["pyproject.toml", "poetry.lock", "./"]
 
 RUN poetry install --no-dev
 
-COPY ["predict_mlflow.py",  "./"]
+COPY ["predict_mlflow.py",  "./tests/integration_test.py", "./"]
 
 EXPOSE 9696
 
 ENTRYPOINT ["gunicorn", "--bind=0.0.0.0:9696", "predict_mlflow:app"]
-
-
