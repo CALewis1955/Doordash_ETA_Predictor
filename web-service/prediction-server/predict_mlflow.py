@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 
-import os
-import pickle
-import pandas as pd
-import mlflow
-from mlflow.tracking import MlflowClient
-from sklearn.pipeline import make_pipeline
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=c-extension-no-member
+# pylint: disable=import-error
 
+import mlflow
 from flask import Flask, request, jsonify
 
 MLFLOW_TRACKING_URI = 'http://127.0.0.1:5000'
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-logged_model = f's3://mlflow-clewis916-remote/7/be10fb2d7fbd4f96abd145479796734b/artifacts/model/'
-
 RUN_ID = 'be10fb2d7fbd4f96abd145479796734b'
+logged_model = f's3://mlflow-clewis916-remote/7/{RUN_ID}/artifacts/model/'
+
 #logged_model = f's3://mlflow-clewis916-remote/mlflow-artifacts/7/{RUN_ID}/artifacts/model/'
 #logged_model = f'runs:/{RUN_ID}/model'
 
@@ -43,4 +42,3 @@ def predict_endpoint(run_id=RUN_ID):
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=9696)
 
-    
