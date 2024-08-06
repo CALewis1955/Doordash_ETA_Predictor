@@ -5,9 +5,11 @@ LOCAL_TAG:=$(shell date +"%Y-%m-%d-%H-%M")
 LOCAL_IMAGE_NAME:=web-service-${LOCAL_TAG}
 
 DOCKERFILE_DIR:= $(shell echo ~/web-service)
+INTEGRATION_TEST_DIR:= $(shell echo ~/web-service/integration-test)
 
-##	pytest tests/
-
+test:
+	bash -c "poetry run pytest ./"
+	
 # quality_checks:
 ###	pylint --recursive=y .
 
@@ -16,10 +18,9 @@ build: #quality_checks test
 
 run: build
 	(cd ${DOCKERFILE_DIR} && docker run -d --name ${LOCAL_IMAGE_NAME} -p 9696:9696 ${LOCAL_IMAGE_NAME})
-#   docker run -d --name ${LOCAL_IMAGE_NAME}-container -p 9696:9696 ${LOCAL_IMAGE_NAME}
 
 integration_test: run
-	docker exec ${LOCAL_IMAGE_NAME} bash -c "poetry run ./integration_test.py"
+	cd ${INTEGRATION_TEST_DIR} && bash -c "poetry run ./integration_test.py"
 
 stop:
 	docker stop ${LOCAL_IMAGE_NAME}
