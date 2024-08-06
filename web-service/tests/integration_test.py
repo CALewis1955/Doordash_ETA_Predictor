@@ -38,7 +38,8 @@ expected_response = {
     'model_version': 'be10fb2d7fbd4f96abd145479796734b',
     'prediction': 3078.9605685846436
 }
-actual_response = requests.post(url, json=features)
+actual_response = requests.post(url, json=features, timeout=5)
 assert actual_response.json() == expected_response
 
 print(actual_response.json())
+print("Passed integration test")
