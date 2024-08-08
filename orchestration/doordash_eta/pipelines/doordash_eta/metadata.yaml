@@ -4,7 +4,6 @@ blocks:
   configuration: {}
   downstream_blocks:
   - clean_data
-  - prepare_training_set
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -21,6 +20,7 @@ blocks:
   configuration: {}
   downstream_blocks:
   - make_fake_data
+  - add_target_to_df
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -86,20 +86,19 @@ blocks:
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
-  downstream_blocks:
-  - tune_parameters
+  downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: prepare_training_set
+  name: register_best_model
   retry_config: null
   status: executed
   timeout: null
   type: transformer
   upstream_blocks:
-  - load_data
-  uuid: prepare_training_set
+  - train_models
+  uuid: register_best_model
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
@@ -108,14 +107,50 @@ blocks:
   executor_type: local_python
   has_callback: false
   language: python
-  name: tune_parameters
+  name: train_models
   retry_config: null
   status: executed
   timeout: null
   type: transformer
   upstream_blocks:
-  - prepare_training_set
-  uuid: tune_parameters
+  - split_into_train_and_val_sets
+  uuid: train_models
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: transformers/add_target_to_df.py
+  downstream_blocks:
+  - split_into_train_and_val_sets
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: add_target_to_df
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - clean_data
+  uuid: add_target_to_df
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - train_models
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: split_into_train_and_val_sets
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - add_target_to_df
+  uuid: split_into_train_and_val_sets
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -138,5 +173,6 @@ spark_config: {}
 tags: []
 type: python
 uuid: doordash_eta
+variables: {}
 variables_dir: /home/src/mage_data/doordash_eta
 widgets: []

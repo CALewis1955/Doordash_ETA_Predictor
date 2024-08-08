@@ -1,0 +1,2 @@
+cd orchestration
+./start.sh
