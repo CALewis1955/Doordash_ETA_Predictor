@@ -24,7 +24,7 @@ We use Mage to orchestrate the workflow.  As depicted by the Mage tree, the work
 
 The other path creates a dummy set of data and then uses Evidently to monitor whether data drift has occurred.  This path also stores the Evidently report in the s3 bucket.  Here is a screenshot of the Mage workflow:
 
-[Screenshot](~/images/mage_workflow.png)
+![Screenshot](/images/mage_workflow.png)
 
 Finally, I have implemented a prediction web service as a Flask app that runs on port 9696.  A user can make an HTTP post request to the web service to obtain a prediction of the duration of the delivery.
 
@@ -116,11 +116,11 @@ The relevant Mage data_loader and transformer files are found in the Github repo
 
 The last two blocks on the right side of the workflow train the models and then register the best one in MlFlow's model registry.  Here is a screenshot of the model registry:
 
-[Screenshot](~/images/mlflow_registered_models.png)
+[!Screenshot](/images/mlflow_registered_models.png)
 
 Herre is a screenshot of the experiments:
 
-[Screenshot](~/images/mlflow_experiments.png)
+![Screenshot](/images/mlflow_experiments.png)
 
 The left side of the workflow creates dummy data that simulates updated information on doordash delivery times.  This data is used by the Evidently report to evaluate data drift.  
 
