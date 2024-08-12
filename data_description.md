@@ -111,11 +111,11 @@ from sklearn.metrics import mean_squared_error
 
 
 with mlflow.start_run():
-    
+
     mlflow.set_tag("developer", "clewis")
 
-    mlflow.log_param("train-data-path", "data/historical_data_csv")   
-        
+    mlflow.log_param("train-data-path", "data/historical_data_csv")
+
     lr = LinearRegression()
     lr.fit(X_train, y_train)
 
@@ -154,4 +154,3 @@ ridge.fit(X_train, y_train)
 y_pred = ridge.predict(X_train)
 
 mean_squared_error(y_train, y_pred, squared=False)
-

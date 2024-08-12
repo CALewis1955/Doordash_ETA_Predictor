@@ -61,13 +61,13 @@ blocks:
   language: python
   name: evidently_report
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: transformer
   upstream_blocks:
   - make_fake_data
   uuid: evidently_report
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
   color: null
   configuration: {}
   downstream_blocks: []
@@ -86,30 +86,15 @@ blocks:
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
-  downstream_blocks: []
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: register_best_model
-  retry_config: null
-  status: executed
-  timeout: null
-  type: transformer
-  upstream_blocks:
-  - train_models
-  uuid: register_best_model
-- all_upstream_blocks_executed: true
-  color: null
-  configuration: {}
-  downstream_blocks: []
+  downstream_blocks:
+  - register_best_model
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
   name: train_models
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: transformer
   upstream_blocks:
@@ -151,6 +136,24 @@ blocks:
   upstream_blocks:
   - add_target_to_df
   uuid: split_into_train_and_val_sets
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    file_source:
+      path: transformers/register_best_model.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: register_best_model
+  retry_config: null
+  status: updated
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - train_models
+  uuid: register_best_model
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

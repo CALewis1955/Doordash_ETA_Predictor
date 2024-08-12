@@ -3,6 +3,7 @@ if 'transformer' not in globals():
 if 'test' not in globals():
     from mage_ai.data_preparation.decorators import test
 
+import os
 import mlflow
 from hyperopt import fmin, tpe, Trials, hp, STATUS_OK
 from sklearn.pipeline import make_pipeline
@@ -14,10 +15,11 @@ from sklearn.metrics import mean_squared_error
 from hyperopt.pyll.base import scope
 from datetime import datetime
 
+
 # Get the current timestamp for the experiment name
 now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-mlflow.set_tracking_uri(uri="http://ec2-34-233-122-168.compute-1.amazonaws.com:5000")
+mlflow.set_tracking_uri("http://ec2-34-233-122-168.compute-1.amazonaws.com:5000")
 mlflow.end_run()
 
 class ModelOptimizer:

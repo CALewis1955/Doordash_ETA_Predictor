@@ -26,7 +26,7 @@ def transform_custom(data):
     filepath = f'./mage_data/evidently_report_{datetime.now().strftime("%m-%d-%Y")}.html'   
     
     bucket_name = 'mlflow-clewis916-remote'
-    object_key = f'evidently_report_{datetime.now().strftime("%m-%d-%Y")}'
+    object_key = f'evidently_report_{datetime.now().strftime("%m-%d-%Y-%H-%M")}'
     with open(filepath, 'r', encoding='utf-8') as file:
         evidently_report = file.read()
 
@@ -44,7 +44,6 @@ def transform_custom(data):
     except Exception as e:  
         print(f"An error occurred: {e}")
     
-    print(f'This is the type: {type(evidently_report)}')
     return evidently_report
 
 

@@ -1,9 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pandas as pd
-import mlflow
 import pickle
+
+import pandas as pd
+
+import mlflow
 
 mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_experiment('my brand new experiment')
@@ -116,19 +118,15 @@ X_train = dv.fit_transform(train_dict)
 val_dict = df_val[categorical + numerical].to_dict(orient='records')
 X_val = dv.transform(val_dict)
 
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import Ridge
-
+from sklearn.linear_model import Lasso, LinearRegression, Ridge
 from sklearn.metrics import mean_squared_error
 
-
 with mlflow.start_run():
-    
+
     mlflow.set_tag("developer", "clewis")
 
-    mlflow.log_param("train-data-path", "data/historical_data_csv")   
-        
+    mlflow.log_param("train-data-path", "data/historical_data_csv")
+
     lr = LinearRegression()
     lr.fit(X_train, y_train)
 
@@ -139,8 +137,8 @@ with mlflow.start_run():
 
 
 
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 sns.histplot(y_pred, label='prediction', bins=50)
 sns.histplot(y_train, label='actual', bins=50)

@@ -1,44 +1,34 @@
 #!/usr/bin/env python3
 
-import os
-import pickle
-import pandas as pd
+# import pandas as pd
 import mlflow
-from mlflow.tracking import MlflowClient
-from sklearn.pipeline import make_pipeline
+from flask import Flask, jsonify, request
 
-from flask import Flask, request, jsonify
-
-MLFLOW_TRACKING_URI = 'http://ec2-34-233-122-168.compute-1.amazonaws.com:5000'
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-logged_model = f's3://mlflow-clewis916-remote/7/be10fb2d7fbd4f96abd145479796734b/artifacts/model/'
-
-RUN_ID = 'be10fb2d7fbd4f96abd145479796734b'
-#logged_model = f's3://mlflow-clewis916-remote/mlflow-artifacts/7/{RUN_ID}/artifacts/model/'
-#logged_model = f'runs:/{RUN_ID}/model'
-
-# Load model as a PyFuncModel.
-model = mlflow.pyfunc.load_model(logged_model)
+EXPERIMENT_ID = 57
+RUN_ID = "00626caf235b409ead10c3c344b913aa"
+LOGGED_MODEL = f"s3://mlflow-clewis916-remote/{EXPERIMENT_ID}/{RUN_ID}/artifacts/model/"
+model = mlflow.pyfunc.load_model(LOGGED_MODEL)
 
 
 # Define a function to predict the ETA
 def predict(features):
     predictions = model.predict(features)
-    return predictions[0]
+    return round(predictions[0], 2)
 
-app = Flask('doordash_eta')
+
+app = Flask("doordash_eta")
 
 # get the features from the request
 
-@app.route('/predict', methods=['POST'])
+
+@app.route("/predict", methods=["POST"])
 def predict_endpoint(run_id=RUN_ID):
     features = request.get_json()
     prediction = predict(features)
-    result = {
-        'prediction': prediction,
-        'model_version': run_id
-    }
+    result = {"prediction": prediction, "model_version": run_id}
+    print("This is the result:", jsonify(result))
     return jsonify(result)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=9696)
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=9696)

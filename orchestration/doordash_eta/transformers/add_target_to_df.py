@@ -43,3 +43,21 @@ def test_output(output, *args) -> None:
     """
     assert output is not None, 'The output is undefined'
 
+@test
+def test_transform(output) -> None:
+
+    data = pd.DataFrame({
+        'created_at': ['2022-01-01 10:00:00', '2022-01-01 11:00:00'],
+        'actual_delivery_time': ['2022-01-01 11:30:00', '2022-01-01 12:00:00']
+    })
+
+    # Call the transform function
+    output = transform(data)
+
+    # Check if the output dataframe has the expected columns
+    assert 'actual_duration' in output.columns
+
+    # Check if the actual_duration column has the correct values
+    assert output['actual_duration'].tolist() == [90, 60]
+    
+    
