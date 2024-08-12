@@ -31,9 +31,9 @@ All services are run on Docker containers, and Poetry has been used for dependen
 
 ## Issues
 
-During the coding of this project, I encountered a multitude of errors.  My best friends were  ChatGPT and the course's Slack channel [https://datatalks-club.slack.com/join/shared_invite/zt-2hu0sjeic-ESN7uHt~aVWc8tD3PefSlA#/shared-invite/email].
+During the coding of this project, I encountered a multitude of errors.  My best friends were ChatGPT and the course's Slack channel [https://datatalks-club.slack.com/join/shared_invite/zt-2hu0sjeic-ESN7uHt~aVWc8tD3PefSlA#/shared-invite/email].
 
-I ran out of time to implement many features, including using Grafana, which would require code to store the Evidently report in a database, implementing the best practices addressed in module 06 of the course, and optimizing the machine learning models.
+I ran out of time to implement many features, including using Grafana, which would require code to store the Evidently report in a database.
 
 I switched to Poetry after spending a week in "dependency hell" using pipenv and conda.  As an example, I could not run Mlflow with Python 3.12.  The problem I encountered is described here:  [https://github.com/mlflow/mlflow/issues/11330].  I found Poetry to be relatively straightforward for dependency management and for using different versions of Python.
 
@@ -44,7 +44,7 @@ I switched to Poetry after spending a week in "dependency hell" using pipenv and
 
 Clone the Github repository locally.
 
-    git clone https://github.com/CALewis1955/doordash_eta_predictor/master
+    git clone https://github.com/CALewis1955/doordash_eta_predictor/branch2
 
 
 ### Step 2 -- Setup your AWS account
@@ -65,28 +65,79 @@ Create appropriate permissions for your EC2 instance to write and retrieve data 
 
 Configure your EC2 instance by installing Docker, docker-compose, and Poetry.  This video provides instruction on setting up the environment:  [https://www.youtube.com/watch?v=IXSiYkP23zo&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK&index=3.]
 
-### Step 3 -- Start Mage
+You will need to modify the following files:
 
-Navigate to the orchestration directory, and run "./start.sh".  This will invoke a Dockerfile to start Mage and a Postgres database.  Please note that this uses pip to install the dependencies and does not need Poetry.
+~/.bashrc -- You will need to add your AWS credentials so they can be accessed by the Makefile.  Here is the code to add to your .bashrc file:
 
-You must add your AWS credentials to the .env.dev file so they can be accessed as environment variables, since Mage will be writing info to the s3 bucket.
+    export AWS_ACCESS_KEY_ID=<Your AWS_ACCESS_KEY_ID>
+    export AWS_SECRET_ACCESS_KEY=<Your AWS_SECRET_ACCESS_KEY>
+    export AWS_DEFAULT_REGION=<Your AWS_DEFAULT_REGION>
+
+~/Makefile -- For the backend-store-uri and s3 bucket, you will need to insert your AWS RDS Master Username, your AWS RDS Master Password, your RDS endpoint, your RDS DB name, and your s3 bucket name.
+
+~/start.sh -- As with the Makefile, you will need to insert your AWS information. 
+
+~/orchestration/doordash_eta/.env.dev -- You will need to add the AWS credentials.  This allows the Mage orchestration to save the Evidently report to the s3 bucket.
+
+~/orchestration/doordash_eta/transformers/train_models.py -- You will need to insert your AWS information for the URL of the MlFlow tracking server.  This takes the form:  http://<your AWS EC2 Public IPv4 DNS>:5000.
+
+~/orchestration/doordash_eta/transformers/register_best_model.py -- Again, you will need to insert your AWS information for the URL of the MlFlow tracking server.
+
+~/web_service/predict_mlflow.py -- In the file "predict_mlflow.py", you will need to specify your logged model information (experiment_id and RUN_ID) and replace my s3 bucket name ("mlflow-clewis916-remote") with the name of your s3 bucket. 
+
+You will also need to ensure that Python 3.11.9 is available on your EC2 instance.  You will also need to install isort, black, and pre-commit.
+ 
+
+### Step 3 -- Start the End-to-End Project
+
+From the home directory, run the Makefile by invoking the following command:
+
+    make all
+
+This will automatically initiate the setup with Poetry, run quality checks on the web_service directory, start the MlFlow server on the AWS EC2 instance, start Mage and run the pipeline according to any triggers you wish to configure, start the prediction web server on port 9696, and perform an integration test.  Once the Makefile runs, the MlFlow UI will be accessible in your browser at localhost:5000, and Mage will be accessible at localhost:6789.  
+
+Alternatively, if you merely want to start the MlFlow server and access Mage, you can run the following command:
+
+    scripts/start.sh
+
+To shut down the prediction server in the web_service, I use the following command:
+
+    sudo lsof -t -i :9696 | xargs sudo kill -9
+
+To shut down the Mage server, you can navigate to the orchestration directory and run "docker-compose down".  
+
+To shut down the MlFlow server, you can use the following command:
+
+    sudo lsof -t -i :5000 | xargs sudo kill -9    
 
 Here is a screenshot of the Mage workflow:
 
-![Screenshot](~/images/mage_screenshot.png)
+![Screenshot](~/images/mage_workflow.png)
 
-To view Mage in your browser, go to localhost:6789.  (If you encounter difficulty, ensure you've forwarded the port in VS Code, and ensure that no earlier processes are using the port on your local machine.  You can do the latter with the following command:  "lsof -i:6789".  If earlier processes are interfering with your use, kill them with this command:  "kill -9 <process id>" and then try to forward the port again.)
+The relevant Mage data_loader and transformer files are found in the Github repository at orchestration/doordash_eta/data_loaders and orchestration/doordash_eta/transformers.  The file that saves the Evidently report to the s3 bucket is found at orchestration/doordash_eta/custom/save_evidently_report_to_s3.py.
+
+The last two blocks on the right side of the workflow train the models and then register the best one in MlFlow's model registry.  Here is a screenshot of the model registry:
+
+![Screenshot](~/images/mlflow_registered_models.png)
+
+Herre is a screenshot of the experiments:
+
+![Screenshot](~/images/mlflow_experiments.png)
+
+The left side of the workflow creates dummy data that simulates updated information on doordash delivery times.  This data is used by the Evidently report to evaluate data drift.  
+
+If you encounter difficulty viewing either Mage or the MlFlow UI in your browser, ensure you've forwarded the port in VS Code, and ensure that no earlier processes are using the port on your local machine.  You can do the latter with the following command:  "lsof -i:6789".  If earlier processes are interfering with your use, kill them with this command:  "kill -9 <process id>" and then try to forward the port again.
 
 The Evidently report is stored in both html and JSON format in the "mage_data" directory.
 
-### Step 4 -- Start Mlflow
+### Step 4 -- Start MlFlow
 
-Navigate to the experiment-tracking directory.  To start Mlflow, we need Python 3.11.9, so run the following commands:
+If you want to modify the code and/or play with try different machine learning models, you can start MlFlow and Mage individually.  To start MlFlow, navigate to the experiment-tracking directory.  Since we need Python 3.11.9, run the following commands:
 
     poetry env use 3.11.9
     poetry install
     poetry shell
-    mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://<your_RDSdb_Master_username>:<your_RDSdb_password>@<your_AWS_RDS_endpoint>your_AWS_RDS_port>/<your  AWS_RDSdb_Configuration_DBname> --artifacts-destination s3://<your AWS_s3_bucket_name> --serve-artifacts
+    mlflow server -h 0.0.0.0 -p 5000 --backend-store-uri postgresql://<your_RDSdb_Master_username>:<your_RDSdb_password>@<your_AWS_RDS_endpoint>your_AWS_RDS_port>/<your          AWS_RDSdb_Configuration_DBname> --artifacts-destination s3://<your AWS_s3_bucket_name> --serve-artifacts
 
 Note that Mlflow requires the installation of both boto3 and psycop2g.
 
@@ -96,11 +147,11 @@ You can view the Mlflow tracking server by putting the following URL in your bro
 
 ### Step 5 -- Start Monitoring
 
-The Evidently report is run automatically using Mage.  However, a Grafana dashboard can be viewed by running "docker-compose up" in the Mage directory.  The dashboard will have no data because the JSON from the Evidently report needs to be sent to a database for the Grafana dashboard to view it.
+The Evidently report is run automatically using Mage.  
 
 ### Step 6 -- Web Service
 
-In the web-service directory, run the following command to build the Dockerfile:
+To run the prediction server individually, in the web-service directory, run the following command to build the Dockerfile:
 
     docker build --build-arg AWS_ACCESS_KEY_ID=<your AWS Access Key> --build-arg AWS_SECRET_ACCESS_KEY=<your AWS Secret Access Key> -t web-service:v1 .
 
@@ -110,8 +161,37 @@ To run the web-service, use this command:
 
     docker run -it --rm -p 9696:9696  web-service:v1
 
-You will need to configure your AWS EC2 permissions to allow inbound and outbound traffic on port 9696.  To test the web-sever, open a new terminal window and go to web-service/tests directory.  Run the following commands:
+You will need to configure your AWS EC2 permissions to allow inbound and outbound traffic on port 9696.  To test the web-sever, open a new terminal window and go to web-service/tests directory. Run the following commands:
 
     poetry env use 3.11.9
     poetry install
     poetry run ./test-web-server.py
+
+## Evaluation Criteria
+
+Problem description -- Provided by this README.
+
+Cloud -- The project is fully developed on AWS in the cloud.
+
+Experiment tracking and model registry -- Both experiment tracking and model registry are used via MlFlow.
+
+Workflow orchestration -- Fully deployed workflow using Mage.
+
+Model deployment -- The model deployment code is fully containerized using Docker and deployed to the cloud.
+
+Model monitoring -- The project uses Evidently for basic model monitoring that calculates and reports metrics.
+
+Reproducibility -- Provided by this README.
+
+Best practices
+
+    -- Unit tests have not been implemented.
+    -- An integration test is implemented.
+    -- Isort and Black are implemented for the web_service directory.  I found that pylint did not play well with Mage.
+    -- A Makefile has been implemented to run the entire project automatically.
+    -- Pre-commit hooks are implemented.
+    -- I have not created a CI/CD pipeline.
+    -- I have not deployed Terraform to provision the infrastructure.
+
+If you have any questions about this project, please feel free to email me at clewis916@gmail.com.
+
