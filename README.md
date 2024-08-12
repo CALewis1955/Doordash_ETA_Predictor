@@ -168,28 +168,21 @@ You will need to configure your AWS EC2 permissions to allow inbound and outboun
 ## Evaluation Criteria
 
 Problem description -- Provided by this README.
-
 Cloud -- The project is fully developed on AWS in the cloud.
-
 Experiment tracking and model registry -- Both experiment tracking and model registry are used via MlFlow.
-
 Workflow orchestration -- Fully deployed workflow using Mage.
-
 Model deployment -- The model deployment code is fully containerized using Docker and deployed to the cloud.
-
 Model monitoring -- The project uses Evidently for basic model monitoring that calculates and reports metrics.
-
 Reproducibility -- Provided by this README.
-
 Best practices
 
--- Unit tests have not been implemented.
--- An integration test is implemented.
--- Isort and Black are implemented for the web_service directory.  I found that pylint did not play well with Mage.
--- A Makefile has been implemented to run the entire project automatically.
--- Pre-commit hooks are implemented.
--- I have not created a CI/CD pipeline.
--- I have not deployed Terraform to provision the infrastructure.
+- Unit tests have not been implemented.
+- An integration test is implemented.
+- Isort and Black are implemented for the web_service directory.  I found that pylint did not play well with Mage.
+- A Makefile has been implemented to run the entire project automatically.
+- Pre-commit hooks are implemented.
+- I have not created a CI/CD pipeline.
+- I have not deployed Terraform to provision the infrastructure.
 
 If you have any questions about this project, please feel free to email me at clewis916@gmail.com.
 
