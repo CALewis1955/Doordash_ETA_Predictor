@@ -116,7 +116,7 @@ The relevant Mage data_loader and transformer files are found in the Github repo
 
 The last two blocks on the right side of the workflow train the models and then register the best one in MlFlow's model registry.  Here is a screenshot of the model registry:
 
-[!Screenshot](/images/mlflow_registered_models.png)
+![Screenshot](/images/mlflow_registered_models.png)
 
 Herre is a screenshot of the experiments:
 
