@@ -22,7 +22,9 @@ This project is developed entirely on the cloud.  It utilizes an AWS EC2 instanc
 
 We use Mage to orchestrate the workflow.  As depicted by the Mage tree, the workflow follows two paths after loading the data.  One path runs through the machine learning algorithms and reports the results to Mlflow for tracking.  Experiments are tracked and models are registered in the registry.
 
-The other path creates a dummy set of data and then uses Evidently to monitor whether data drift has occurred.  This path also stores the Evidently report in the s3 bucket.
+The other path creates a dummy set of data and then uses Evidently to monitor whether data drift has occurred.  This path also stores the Evidently report in the s3 bucket.  Here is a screenshot of the Mage workflow:
+
+[Screenshot](~/images/mage_workflow.png)
 
 Finally, I have implemented a prediction web service as a Flask app that runs on port 9696.  A user can make an HTTP post request to the web service to obtain a prediction of the duration of the delivery.
 
@@ -44,7 +46,7 @@ I switched to Poetry after spending a week in "dependency hell" using pipenv and
 
 Clone the Github repository locally.
 
-    git clone https://github.com/CALewis1955/doordash_eta_predictor/branch2
+    git clone https://github.com/CALewis1955/doordash_eta_predictor/main
 
 
 ### Step 2 -- Setup your AWS account
@@ -110,19 +112,15 @@ To shut down the MlFlow server, you can use the following command:
 
     sudo lsof -t -i :5000 | xargs sudo kill -9    
 
-Here is a screenshot of the Mage workflow:
-
-![Screenshot](~/images/mage_workflow.png)
-
 The relevant Mage data_loader and transformer files are found in the Github repository at orchestration/doordash_eta/data_loaders and orchestration/doordash_eta/transformers.  The file that saves the Evidently report to the s3 bucket is found at orchestration/doordash_eta/custom/save_evidently_report_to_s3.py.
 
 The last two blocks on the right side of the workflow train the models and then register the best one in MlFlow's model registry.  Here is a screenshot of the model registry:
 
-![Screenshot](~/images/mlflow_registered_models.png)
+[Screenshot](~/images/mlflow_registered_models.png)
 
 Herre is a screenshot of the experiments:
 
-![Screenshot](~/images/mlflow_experiments.png)
+[Screenshot](~/images/mlflow_experiments.png)
 
 The left side of the workflow creates dummy data that simulates updated information on doordash delivery times.  This data is used by the Evidently report to evaluate data drift.  
 
@@ -185,13 +183,13 @@ Reproducibility -- Provided by this README.
 
 Best practices
 
-    -- Unit tests have not been implemented.
-    -- An integration test is implemented.
-    -- Isort and Black are implemented for the web_service directory.  I found that pylint did not play well with Mage.
-    -- A Makefile has been implemented to run the entire project automatically.
-    -- Pre-commit hooks are implemented.
-    -- I have not created a CI/CD pipeline.
-    -- I have not deployed Terraform to provision the infrastructure.
+-- Unit tests have not been implemented.
+-- An integration test is implemented.
+-- Isort and Black are implemented for the web_service directory.  I found that pylint did not play well with Mage.
+-- A Makefile has been implemented to run the entire project automatically.
+-- Pre-commit hooks are implemented.
+-- I have not created a CI/CD pipeline.
+-- I have not deployed Terraform to provision the infrastructure.
 
 If you have any questions about this project, please feel free to email me at clewis916@gmail.com.
 
